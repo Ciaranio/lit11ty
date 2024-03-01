@@ -1,0 +1,29 @@
+name: Build and Deploy Eleventy Site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Adjust if your default branch has a different name
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'  # Specify the Node.js version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Eleventy Site
+        run: npx @11ty/eleventy
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site  # Adjust if your build output directory is different
